@@ -1,0 +1,16 @@
+PODS:
+  - Networking (4.4.0)
+
+DEPENDENCIES:
+  - Networking (~> 4)
+
+SPEC REPOS:
+  trunk:
+    - Networking
+
+SPEC CHECKSUMS:
+  Networking: cbef47ab030af248248c26a696adb88989b52ef1
+
+PODFILE CHECKSUM: aaa3fdb4caeb8feb862bd9ee88cc61f045c58531
+
+COCOAPODS: 1.8.4
