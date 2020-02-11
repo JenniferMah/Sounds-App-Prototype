@@ -1,0 +1,6 @@
+module Pods_Microphone {
+  umbrella header "Pods-Microphone-umbrella.h"
+
+  export *
+  module * { export * }
+}
