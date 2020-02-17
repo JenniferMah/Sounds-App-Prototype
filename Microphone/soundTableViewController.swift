@@ -11,11 +11,15 @@ import Networking
 import AVFoundation
 import AVKit
 
+
 class soundTableViewController: UIViewController {
     var player: AVPlayer!
     var SoundNamesArray = [String]()
     var SoundURLArray = [String]()
     let sampleTextField =  UITextField(frame: CGRect(x: 100, y: 100, width: 200, height: 50))
+    let SubmitButton = UIButton(frame: CGRect(x: 100, y: 200, width: 200, height: 50))
+    let PlayButton = UIButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
+    let PauseButton = UIButton(frame: CGRect(x: 100, y: 400, width: 200, height: 50))
 
     
 
@@ -28,21 +32,18 @@ class soundTableViewController: UIViewController {
         self.view.addSubview(sampleTextField)
         
         //Submit button
-        let SubmitButton = UIButton(frame: CGRect(x: 100, y: 200, width: 200, height: 50))
         SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         SubmitButton.setTitle("Submit", for: .normal)
         SubmitButton.addTarget(self, action: #selector(Submit), for: .touchUpInside)
         self.view.addSubview(SubmitButton)
 
         //Play sounds
-        let PlayButton = UIButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
         PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         PlayButton.setTitle("Play", for: .normal)
         PlayButton.addTarget(self, action: #selector(playSounds), for: .touchUpInside)
         self.view.addSubview(PlayButton)
         
         //pause sounds
-        let PauseButton = UIButton(frame: CGRect(x: 100, y: 400, width: 200, height: 50))
         PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         PauseButton.setTitle("Pause Audio", for: .normal)
         PauseButton.addTarget(self, action: #selector(pauseSound), for: .touchUpInside)
@@ -52,6 +53,13 @@ class soundTableViewController: UIViewController {
     @objc func Submit(){
         let search = sampleTextField.text!
         MakeApiCall(SearchItem: search)
+        SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+        SubmitButton.setTitle("Submitted", for: .normal)
+        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        PlayButton.setTitle("Play", for: .normal)
+        PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+               PauseButton.setTitle("Pause Audio", for: .normal)
+
     }
 
     func CreateSounds(SoundURL:String){
@@ -64,11 +72,21 @@ class soundTableViewController: UIViewController {
     }
     
     @objc func playSounds(){
-        self.CreateSounds(SoundURL: self.SoundURLArray[0])
+        SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        SubmitButton.setTitle("Submit", for: .normal)
+        self.CreateSounds(SoundURL: self.SoundURLArray[1]) // takes some time to make whole API call
+        print(self.SoundURLArray[0])
+        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+        PlayButton.setTitle("Playing Sound", for: .normal)
         player.play()
     }
     
     @objc func pauseSound(){
+        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        PlayButton.setTitle("Play", for: .normal)
+        PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
+        PauseButton.setTitle("Pausing Audio", for: .normal)
+        
         player.pause()
     }
     
