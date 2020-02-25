@@ -12,81 +12,73 @@ import AVFoundation
 import AVKit
 
 
-class soundTableViewController: UIViewController {
+class soundTableViewController: UIViewController, UISearchBarDelegate {
     var player: AVPlayer!
     var SoundNamesArray = [String]()
     var SoundURLArray = [String]()
-    let sampleTextField =  UITextField(frame: CGRect(x: 100, y: 100, width: 200, height: 50))
-    let SubmitButton = UIButton(frame: CGRect(x: 100, y: 200, width: 200, height: 50))
-    let PlayButton = UIButton(frame: CGRect(x: 100, y: 300, width: 200, height: 50))
-    let PauseButton = UIButton(frame: CGRect(x: 100, y: 400, width: 200, height: 50))
-
+    var celldata: [CellData] = [] //array of sounds
+    var searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40))
     
+    //UI Items
+
+    struct cells{
+           static let soundCell = "SoundCell"
+       }
+    //MARK: table view stuff
+    var tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
-        sampleTextField.placeholder = "Enter Sound"
-        sampleTextField.font = UIFont.systemFont(ofSize: 15)
-        self.view.addSubview(sampleTextField)
-        
-        //Submit button
-        SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        SubmitButton.setTitle("Submit", for: .normal)
-        SubmitButton.addTarget(self, action: #selector(Submit), for: .touchUpInside)
-        self.view.addSubview(SubmitButton)
-
-        //Play sounds
-        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        PlayButton.setTitle("Play", for: .normal)
-        PlayButton.addTarget(self, action: #selector(playSounds), for: .touchUpInside)
-        self.view.addSubview(PlayButton)
-        
-        //pause sounds
-        PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        PauseButton.setTitle("Pause Audio", for: .normal)
-        PauseButton.addTarget(self, action: #selector(pauseSound), for: .touchUpInside)
-        self.view.addSubview(PauseButton)
+        title = "Sounds Stuff"
+        celldata = fetchdata()
+        configureTableView()
+        tableView.tableHeaderView = searchBar
+        searchBar.delegate = self
     }
     
-    @objc func Submit(){
-        let search = sampleTextField.text!
-        MakeApiCall(SearchItem: search)
-        SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-        SubmitButton.setTitle("Submitted", for: .normal)
-        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        PlayButton.setTitle("Play", for: .normal)
-        PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-               PauseButton.setTitle("Pause Audio", for: .normal)
-
-    }
-
-    func CreateSounds(SoundURL:String){
-        let url = URL.init(string:SoundURL)
-        let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
-        player = AVPlayer(playerItem: playerItem)
-        let playerLayer = AVPlayerLayer(player: player!)
-        playerLayer.frame = CGRect(x: 0, y: 0, width: 10, height: 50)
-        self.view.layer.addSublayer(playerLayer)
+//    MARK:Tableview stuff
+    func configureTableView(){
+        self.view.addSubview(tableView)
+        setTableViewDelegates()
+        tableView.rowHeight = 100 //control row height
+        //register cells
+        tableView.register(SoundCell.self, forCellReuseIdentifier: cells.soundCell)
+        tableView.pin(to:view)
     }
     
-    @objc func playSounds(){
-        SubmitButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        SubmitButton.setTitle("Submit", for: .normal)
-        self.CreateSounds(SoundURL: self.SoundURLArray[1]) // takes some time to make whole API call
-        print(self.SoundURLArray[0])
-        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-        PlayButton.setTitle("Playing Sound", for: .normal)
-        player.play()
+    func setTableViewDelegates(){
+        tableView.delegate = self
+        tableView.dataSource = self
     }
+    
+    
+    //MARK:Search bar stuff
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //make Api call
+        let SearchWord = searchBar.text!
+        MakeApiCall(SearchItem: SearchWord)
+
+    }
+
+//    func CreateSounds(SoundURL:String){
+//        let url = URL.init(string:SoundURLArray[1])
+//        let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
+//        player = AVPlayer(playerItem: playerItem)
+//        let playerLayer = AVPlayerLayer(player: player!)
+//        playerLayer.frame = CGRect(x: 0, y: 0, width: 10, height: 50)
+//        self.view.layer.addSublayer(playerLayer)
+//        player.play()
+//
+//    }
+//
+//    @objc func playSounds(){
+//        self.CreateSzounds(SoundURL: self.SoundURLArray[1]) //ide
+//        player.play()
+//    }
     
     @objc func pauseSound(){
-        PlayButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-        PlayButton.setTitle("Play", for: .normal)
-        PauseButton.backgroundColor = UIColor(displayP3Red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
-        PauseButton.setTitle("Pausing Audio", for: .normal)
-        
         player.pause()
     }
     
@@ -108,14 +100,73 @@ class soundTableViewController: UIViewController {
                     let previews = SoundData.value(forKey: "previews") as! NSDictionary //dictionary of previews
                     let MP3url = previews.value(forKey: "preview-lq-mp3") as! String // get the preview low quality
                     self.SoundURLArray.append(MP3url)
-                   
+                    self.tableView.reloadData()
+
                 }
             case.failure(_):
                 print("Error")
             }
-            
+        }
+    }
+    
+    
+    
+    //Playing fucntion in table view
+    @objc func playSound(){
+        let url = URL.init(string:SoundURLArray[1])
+        let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
+        player = AVPlayer(playerItem: playerItem)
+        let playerLayer = AVPlayerLayer(player: player!)
+        playerLayer.frame = CGRect(x: 0, y: 0, width: 10, height: 50)
+        self.view.layer.addSublayer(playerLayer)
+        player.play()
+    }
+    
+    //Adding the sound to the sound board
+    @objc func AddingSounds(){
+        print( "Add sounds")
+    }
+}
+
+
+//extension
+
+extension soundTableViewController: UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return celldata.count
+
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cells.soundCell) as! SoundCell
+        cell.playButton.addTarget(self, action: #selector(playSound),for: .touchUpInside)
+        cell.addButton.addTarget(self, action: #selector(AddingSounds),for: .touchUpInside)
+        if SoundNamesArray.count == 0{
+            return UITableViewCell()
+        }else{
+            cell.soundName.text = SoundNamesArray[indexPath.row]
+            return cell
         }
         
     }
-
+        
 }
+
+//instead
+extension soundTableViewController{
+    
+    func fetchdata() -> [CellData] {
+        let cellHold1 = CellData(title: "Cell1", button: UIButton())
+        let cellHold2 = CellData(title: "Cell2", button: UIButton())
+        let cellHold3 = CellData(title: "Cell3", button: UIButton())
+        let cellHold4 = CellData(title: "Cell4", button: UIButton())
+        let cellHold5 = CellData(title: "Cell5", button: UIButton())
+        let cellHold6 = CellData(title: "Cell6", button: UIButton())
+        let cellHold7 = CellData(title: "Cell7", button: UIButton())
+        let cellHold8 = CellData(title: "Cell8", button: UIButton())
+        let cellHold9 = CellData(title: "Cell9", button: UIButton())
+        let cellHold10 = CellData(title: "Cell10", button: UIButton())
+        return [cellHold1, cellHold2, cellHold3, cellHold4, cellHold5, cellHold6, cellHold7, cellHold8, cellHold9, cellHold10]
+    }
+}
+

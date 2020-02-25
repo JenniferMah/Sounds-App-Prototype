@@ -15,6 +15,9 @@
 		28BD2AE923E29BB700C3423C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD2AE823E29BB700C3423C /* ViewController.swift */; };
 		28BD2AEE23E29BB900C3423C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28BD2AED23E29BB900C3423C /* Assets.xcassets */; };
 		28BD2AF123E29BB900C3423C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28BD2AEF23E29BB900C3423C /* LaunchScreen.storyboard */; };
+		28FF459423FB445C00E39B4A /* UIview+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FF459323FB445C00E39B4A /* UIview+Ext.swift */; };
+		28FF459623FB470B00E39B4A /* SoundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FF459523FB470B00E39B4A /* SoundCell.swift */; };
+		28FF459823FB4B6D00E39B4A /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FF459723FB4B6D00E39B4A /* Data.swift */; };
 		CACDC447D8E9A529370DA043 /* libPods-Microphone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52665F0901C0FA533146A771 /* libPods-Microphone.a */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +32,9 @@
 		28BD2AED23E29BB900C3423C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28BD2AF023E29BB900C3423C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28BD2AF223E29BB900C3423C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28FF459323FB445C00E39B4A /* UIview+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIview+Ext.swift"; sourceTree = "<group>"; };
+		28FF459523FB470B00E39B4A /* SoundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundCell.swift; sourceTree = "<group>"; };
+		28FF459723FB4B6D00E39B4A /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		52665F0901C0FA533146A771 /* libPods-Microphone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Microphone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		550FF28B612E0320B929F9E1 /* Pods-Microphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Microphone.debug.xcconfig"; path = "Target Support Files/Pods-Microphone/Pods-Microphone.debug.xcconfig"; sourceTree = "<group>"; };
 		F15FA82CC66A87E14B2EFF58 /* Pods-Microphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Microphone.release.xcconfig"; path = "Target Support Files/Pods-Microphone/Pods-Microphone.release.xcconfig"; sourceTree = "<group>"; };
@@ -67,17 +73,28 @@
 		28BD2AE323E29BB700C3423C /* Microphone */ = {
 			isa = PBXGroup;
 			children = (
+				28BD2AE823E29BB700C3423C /* ViewController.swift */,
+				28FF459223FB440600E39B4A /* Extensions-Utilities */,
 				28BD2AE423E29BB700C3423C /* AppDelegate.swift */,
 				28BD2AE623E29BB700C3423C /* SceneDelegate.swift */,
-				28BD2AE823E29BB700C3423C /* ViewController.swift */,
-				2894B8DA23E88F0700D6B369 /* soundTableViewController.swift */,
-				282E41EC23E8B21C005D3C8D /* HoldsPages.swift */,
 				2894B8DC23E8911200D6B369 /* URLbuilder.swift */,
+				2894B8DA23E88F0700D6B369 /* soundTableViewController.swift */,
+				28FF459723FB4B6D00E39B4A /* Data.swift */,
+				28FF459523FB470B00E39B4A /* SoundCell.swift */,
+				282E41EC23E8B21C005D3C8D /* HoldsPages.swift */,
 				28BD2AED23E29BB900C3423C /* Assets.xcassets */,
 				28BD2AEF23E29BB900C3423C /* LaunchScreen.storyboard */,
 				28BD2AF223E29BB900C3423C /* Info.plist */,
 			);
 			path = Microphone;
+			sourceTree = "<group>";
+		};
+		28FF459223FB440600E39B4A /* Extensions-Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				28FF459323FB445C00E39B4A /* UIview+Ext.swift */,
+			);
+			path = "Extensions-Utilities";
 			sourceTree = "<group>";
 		};
 		4F0E9FFCFEA0ABF662DDD72A /* Frameworks */ = {
@@ -194,10 +211,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				28BD2AE923E29BB700C3423C /* ViewController.swift in Sources */,
+				28FF459423FB445C00E39B4A /* UIview+Ext.swift in Sources */,
 				282E41ED23E8B21C005D3C8D /* HoldsPages.swift in Sources */,
+				28FF459623FB470B00E39B4A /* SoundCell.swift in Sources */,
 				2894B8DB23E88F0700D6B369 /* soundTableViewController.swift in Sources */,
 				28BD2AE523E29BB700C3423C /* AppDelegate.swift in Sources */,
 				28BD2AE723E29BB700C3423C /* SceneDelegate.swift in Sources */,
+				28FF459823FB4B6D00E39B4A /* Data.swift in Sources */,
 				2894B8DD23E8911200D6B369 /* URLbuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
